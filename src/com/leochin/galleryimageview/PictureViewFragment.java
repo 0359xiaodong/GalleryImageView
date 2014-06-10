@@ -39,7 +39,6 @@ public class PictureViewFragment extends Fragment implements
 			"http://f.hiphotos.baidu.com/image/pic/item/738b4710b912c8fca654a13efe039245d7882199.jpg",
 			"http://f.hiphotos.baidu.com/image/pic/item/c75c10385343fbf25f57e7abb27eca8065388f3b.jpg",
 			"http://g.hiphotos.baidu.com/image/pic/item/fd039245d688d43fd1eed3007f1ed21b0ff43bf8.jpg",
-			"http://f.hiphotos.baidu.com/image/pic/item/78310a55b319ebc4327336118026cffc1e17162a.jpg",
 			"http://a.hiphotos.baidu.com/image/pic/item/0823dd54564e92584112a1619e82d158ccbf4e1e.jpg" };
 
 	@Override

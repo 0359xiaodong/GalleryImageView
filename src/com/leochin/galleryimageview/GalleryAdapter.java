@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.ImageView.ScaleType;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -63,12 +64,14 @@ public class GalleryAdapter extends BaseAdapter {
 
 		view.setLayoutParams(new Gallery.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		
 
 		String item = mItems.get(position);
 		if (item != null) {
 			view.setTag(item);
 
-			ImageListener listener = ImageLoader.getImageListener(view, 0, 0);
+			ImageListener listener = ImageLoader.getImageListener(view, R.drawable.default_test, R.drawable.default_test);
+			//view.setScaleType(ScaleType.CENTER);
 			mImageLoader.get(item, listener);
 		}
 

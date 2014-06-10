@@ -37,7 +37,6 @@ public class MainActivity extends FragmentActivity {
 		getWindow().getWindowManager().getDefaultDisplay().getSize(outSize);
 		screenWidth = outSize.x;
 		screenHeight = outSize.y;
-		Log.d("leochin",screenWidth+","+screenHeight);
 		
 		initFragment();	
 	}

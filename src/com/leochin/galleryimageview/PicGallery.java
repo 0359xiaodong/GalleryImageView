@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -27,13 +28,15 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 		this.setOnTouchListener(this);
 	}
+	
+	private float baseValue = 0;
+	private float originalScale = 0;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
-
-		float baseValue = 0;
-		float originalScale = 0;
+	
+		// 实现双指缩放
 		View view = PicGallery.this.getSelectedView();
 		if (view instanceof MyImageView) {
 			imageView = (MyImageView) view;
@@ -43,17 +46,22 @@ public class PicGallery extends Gallery implements OnTouchListener {
 				originalScale = imageView.getScale();
 			}
 			if (event.getAction() == MotionEvent.ACTION_MOVE) {
+				
+				//双指被按下
 				if (event.getPointerCount() == 2) {
+					//Log.d("leochin","onTouch...Action_move");
 					float x = event.getX(0) - event.getX(1);
 					float y = event.getY(0) - event.getY(1);
+					// 直角三角形勾股定理：a^2+b^2=c^2
+					// sqrt 求平方根
 					float value = (float) Math.sqrt(x * x + y * y);// 计算两点的距离
 					if (baseValue == 0) {
 						baseValue = value;
 					} else {
 						float scale = value / baseValue;// 当前两点间的距离除以手指落下时两点间的距离就是需要缩放的比例。
+						Log.d("leochin","onTouch..."+scale*originalScale);
 						imageView.zoomTo(originalScale * scale,
 								x + event.getX(1), y + event.getY(1));
-
 					}
 				}
 			}
@@ -65,6 +73,8 @@ public class PicGallery extends Gallery implements OnTouchListener {
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
 		
+		//实现左右滑动的效果
+		//Log.d("leochin","onScroll...Action_move");
 		View view = PicGallery.this.getSelectedView();
 		if (view instanceof MyImageView) {
 
@@ -92,6 +102,8 @@ public class PicGallery extends Gallery implements OnTouchListener {
 			{
 				super.onScroll(e1, e2, distanceX, distanceY);
 			} else {
+				
+				//放大之后的滑动情况
 				left = v[Matrix.MTRANS_X];
 				right = left + width;
 				Rect r = new Rect();
@@ -101,8 +113,10 @@ public class PicGallery extends Gallery implements OnTouchListener {
 				{
 					if (r.left > 0 || right < MainActivity.screenWidth) {// 判断当前ImageView是否显示完全
 						super.onScroll(e1, e2, distanceX, distanceY);
+						
 					} else {
 						imageView.postTranslate(-distanceX, -distanceY);
+						
 					}
 				} else if (distanceX < 0)// 向右滑动
 				{
@@ -116,21 +130,8 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 		} else {
 			super.onScroll(e1, e2, distanceX, distanceY);
+			
 		}
-		return false;
-	}
-
-	private boolean isScrollingLeft(MotionEvent e1, MotionEvent e2) {
-		return e2.getX() > e1.getX();
-	}
-
-	private float calXdistance(MotionEvent e1, MotionEvent e2) {
-		return Math.abs(e2.getX() - e1.getX());
-	}
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
 		return false;
 	}
 
@@ -141,6 +142,8 @@ public class PicGallery extends Gallery implements OnTouchListener {
 		}
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_UP:
+			
+			//Log.d("leochin","motionEvent up...");
 			// 判断边界是否越界
 			View view = PicGallery.this.getSelectedView();
 			if (view instanceof MyImageView) {
@@ -152,8 +155,7 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 				imageView = (MyImageView) view;
 				float width = imageView.getScale() * imageView.getImageWidth();
-				float height = imageView.getScale()
-						* imageView.getImageHeight();
+				float height = imageView.getScale() * imageView.getImageHeight();
 
 				if ((int) width <= MainActivity.screenWidth
 						&& (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，判断边界
@@ -192,6 +194,20 @@ public class PicGallery extends Gallery implements OnTouchListener {
 			break;
 		}
 		return super.onTouchEvent(event);
+	}
+
+	private boolean isScrollingLeft(MotionEvent e1, MotionEvent e2) {
+		return e2.getX() > e1.getX();
+	}
+
+	private float calXdistance(MotionEvent e1, MotionEvent e2) {
+		return Math.abs(e2.getX() - e1.getX());
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		return false;
 	}
 
 	public void setDetector(GestureDetector dectector) {

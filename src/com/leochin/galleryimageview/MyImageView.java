@@ -2,11 +2,13 @@ package com.leochin.galleryimageview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
@@ -39,9 +41,6 @@ public class MyImageView extends ImageView {
 
 	protected Handler mHandler = new Handler();
 
-	private int mThisWidth = -1;
-	private int mThisHeight = -1;//布局后的宽度和高度，由于是全屏显示，这两个值等于屏幕分辨率
-
 	private float mMaxZoom;// 最大缩放比例
 	private float mMinZoom;// 最小缩放比例
 
@@ -51,25 +50,29 @@ public class MyImageView extends ImageView {
 	// float scaleRate;// 图片适应屏幕的缩放比例
 
 	static final float SCALE_RATE = 1.25F;
+	
+	private Context mContext;
 
 	public MyImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mContext = context;
 		init();
 	}
 
 	public MyImageView(Context context) {
 		super(context);
+		mContext = context;
 		init();
 	}
 	
 	private void init() {
 		setScaleType(ImageView.ScaleType.MATRIX);
-		//setScaleType(ImageView.ScaleType.CENTER);
 	}
 
 	@Override
 	public void setImageBitmap(Bitmap bitmap) {
 		super.setImageBitmap(bitmap);
+		
 		image = bitmap;
 		setImageHeight(bitmap.getHeight());
 		setImageWidth(bitmap.getWidth());
@@ -77,6 +80,16 @@ public class MyImageView extends ImageView {
 		if (d != null) {
 			d.setDither(true);
 		}
+	}
+	
+	@Override
+	public void setImageResource(int resId) {
+		// TODO Auto-generated method stub
+		super.setImageResource(resId);
+		
+		//Bitmap  bitmap = BitmapFactory.decodeResource(mContext.getResources(), resId);
+		image = BitmapFactory.decodeResource(mContext.getResources(), resId);
+		setImageBitmap(image);
 	}
 
 	// Center as much as possible in one or both axis. Centering is
@@ -145,7 +158,6 @@ public class MyImageView extends ImageView {
 		mMaxZoom = 2*scale;
 		
 		matrix.postScale(scale, scale);
-
 		matrix.postTranslate((viewWidth - w * scale) / 2F, (viewHeight - h
 				* scale) / 2F);
 	}
@@ -189,11 +201,11 @@ public class MyImageView extends ImageView {
 	protected void onLayout(boolean changed, int left, int top, int right,
 			int bottom) {
 		super.onLayout(changed, left, top, right, bottom);
-		mThisWidth = right - left;
-		mThisHeight = bottom - top;
+		//mThisWidth = right - left;
+		//mThisHeight = bottom - top;
 		if (image != null) {
 			getProperBaseMatrix(image, mBaseMatrix);
-			 setImageMatrix(getImageViewMatrix());
+			setImageMatrix(getImageViewMatrix());
 		}
 	}
 
