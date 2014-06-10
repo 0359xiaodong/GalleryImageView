@@ -11,23 +11,17 @@
 
         <com.leochin.galleryimageview.PicGallery
             android:id="@+id/pic_gallery"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:spacing="5dip" />
-        
-        <TextView 
+
+        <TextView
             android:id="@+id/pic_summary_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:textColor="#ffffff"
-            android:text="hello leochin"/>
-        
-        <Button 
-            android:id="@+id/pic_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LeoChin"/>
+            android:text="hello leochin"
+            android:textColor="#ffffff" />
     </RelativeLayout>
 
 </FrameLayout>

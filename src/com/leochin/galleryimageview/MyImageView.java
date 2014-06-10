@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.widget.ImageView;
 
 public class MyImageView extends ImageView {
-	//private static final boolean DEBUG = Logger.DEBUG && false;
 	// This is the base transformation which is used to show the image
 	// initially. The current computation for this shows the image in
 	// it's entirety, letterboxing as needed. One could choose to
@@ -40,11 +39,11 @@ public class MyImageView extends ImageView {
 
 	protected Handler mHandler = new Handler();
 
-	int mThisWidth = -1;
-	int mThisHeight = -1;//布局后的宽度和高度，由于是全屏显示，这两个值等于屏幕分辨率
+	private int mThisWidth = -1;
+	private int mThisHeight = -1;//布局后的宽度和高度，由于是全屏显示，这两个值等于屏幕分辨率
 
-	float mMaxZoom;// 最大缩放比例
-	float mMinZoom;// 最小缩放比例
+	private float mMaxZoom;// 最大缩放比例
+	private float mMinZoom;// 最小缩放比例
 
 	private int imageWidth;// 图片的原始宽度
 	private int imageHeight;// 图片的原始高度
@@ -61,6 +60,11 @@ public class MyImageView extends ImageView {
 	public MyImageView(Context context) {
 		super(context);
 		init();
+	}
+	
+	private void init() {
+		setScaleType(ImageView.ScaleType.MATRIX);
+		//setScaleType(ImageView.ScaleType.CENTER);
 	}
 
 	@Override
@@ -122,11 +126,6 @@ public class MyImageView extends ImageView {
 
 		postTranslate(deltaX, deltaY);
 		setImageMatrix(getImageViewMatrix());
-	}
-
-	private void init() {
-		setScaleType(ImageView.ScaleType.MATRIX);
-		//setScaleType(ImageView.ScaleType.CENTER);
 	}
 
 	// Setup the base matrix so that the image is centered and scaled properly.
@@ -205,8 +204,6 @@ public class MyImageView extends ImageView {
 			scale = mMinZoom;
 		}
 
-//		Logger.d(DEBUG, "[MyImageView.zoomTo]" + "scale=" + scale
-//				+ ",mMaxZoom=" + mMaxZoom + ",mMinZoom=" + mMinZoom);
 		float oldScale = getScale();
 		float deltaScale = scale / oldScale;
 

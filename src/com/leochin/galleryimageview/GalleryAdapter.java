@@ -23,17 +23,17 @@ public class GalleryAdapter extends BaseAdapter {
 	public LruImageCache mLruImageCache;
 	public ImageLoader mImageLoader;
 
-	public void setData(List<String> data) {
-		this.mItems = data;
-		notifyDataSetChanged();
-	}
-
 	public GalleryAdapter(Context context) {
 		this.context = context;
 
 		mQueue = Volley.newRequestQueue(context);
 		mLruImageCache = LruImageCache.instance();
 		mImageLoader = new ImageLoader(mQueue, mLruImageCache);
+	}
+
+	public void setData(List<String> data) {
+		this.mItems = data;
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -54,12 +54,11 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		Log.d("leochin","convertView = " + convertView);
+		// Log.d("leochin","convertView = " + convertView);
 		MyImageView view = (MyImageView) convertView;
 
 		if (view == null) {
 			view = new MyImageView(context);
-			//Log.d("leochin","new MyimageView " + position);
 		}
 
 		view.setLayoutParams(new Gallery.LayoutParams(
@@ -69,8 +68,7 @@ public class GalleryAdapter extends BaseAdapter {
 		if (item != null) {
 			view.setTag(item);
 
-			ImageListener listener = ImageLoader.getImageListener(view,
-					R.drawable.ic_launcher, R.drawable.ic_launcher);
+			ImageListener listener = ImageLoader.getImageListener(view, 0, 0);
 			mImageLoader.get(item, listener);
 		}
 

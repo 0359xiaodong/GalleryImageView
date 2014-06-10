@@ -8,73 +8,63 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Gallery;
 
-public class PicGallery extends Gallery {
+@SuppressWarnings("deprecation")
+public class PicGallery extends Gallery implements OnTouchListener {
 
-	// private static final boolean DEBUG = Logger.DEBUG && false;
 	private GestureDetector gestureScanner;
 	private MyImageView imageView;
 
-	int kEvent = KEY_INVALID; // invalid
 	public static final int KEY_INVALID = -1;
-	float v[] = new float[9];
+	private int kEvent = KEY_INVALID; // invalid
 
-	public PicGallery(Context context) {
-		super(context);
-
-	}
-
-	public PicGallery(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-
-	}
+	private float v[] = new float[9];
 
 	public PicGallery(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		this.setOnTouchListener(new OnTouchListener() {
+		this.setOnTouchListener(this);
+	}
 
-			float baseValue;
-			float originalScale;
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				View view = PicGallery.this.getSelectedView();
-				if (view instanceof MyImageView) {
-					imageView = (MyImageView) view;
+		float baseValue = 0;
+		float originalScale = 0;
+		View view = PicGallery.this.getSelectedView();
+		if (view instanceof MyImageView) {
+			imageView = (MyImageView) view;
 
-					if (event.getAction() == MotionEvent.ACTION_DOWN) {
-						baseValue = 0;
-						originalScale = imageView.getScale();
-					}
-					if (event.getAction() == MotionEvent.ACTION_MOVE) {
-						if (event.getPointerCount() == 2) {
-							float x = event.getX(0) - event.getX(1);
-							float y = event.getY(0) - event.getY(1);
-							float value = (float) Math.sqrt(x * x + y * y);// 计算两点的距离
-							// System.out.println("value:" + value);
-							if (baseValue == 0) {
-								baseValue = value;
-							} else {
-								float scale = value / baseValue;// 当前两点间的距离除以手指落下时两点间的距离就是需要缩放的比例。
-								// scale the image
-								imageView.zoomTo(originalScale * scale, x
-										+ event.getX(1), y + event.getY(1));
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				baseValue = 0;
+				originalScale = imageView.getScale();
+			}
+			if (event.getAction() == MotionEvent.ACTION_MOVE) {
+				if (event.getPointerCount() == 2) {
+					float x = event.getX(0) - event.getX(1);
+					float y = event.getY(0) - event.getY(1);
+					float value = (float) Math.sqrt(x * x + y * y);// 计算两点的距离
+					if (baseValue == 0) {
+						baseValue = value;
+					} else {
+						float scale = value / baseValue;// 当前两点间的距离除以手指落下时两点间的距离就是需要缩放的比例。
+						imageView.zoomTo(originalScale * scale,
+								x + event.getX(1), y + event.getY(1));
 
-							}
-						}
 					}
 				}
-				return false;
 			}
-
-		});
+		}
+		return false;
 	}
 
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
+		
 		View view = PicGallery.this.getSelectedView();
 		if (view instanceof MyImageView) {
 
@@ -97,7 +87,8 @@ public class PicGallery extends Gallery {
 			float width = imageView.getScale() * imageView.getImageWidth();
 			float height = imageView.getScale() * imageView.getImageHeight();
 
-			if ((int) width <= MainActivity.screenWidth && (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，直接处理滑屏事件
+			if ((int) width <= MainActivity.screenWidth
+					&& (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，直接处理滑屏事件
 			{
 				super.onScroll(e1, e2, distanceX, distanceY);
 			} else {
@@ -164,7 +155,8 @@ public class PicGallery extends Gallery {
 				float height = imageView.getScale()
 						* imageView.getImageHeight();
 
-				if ((int) width <= MainActivity.screenWidth && (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，判断边界
+				if ((int) width <= MainActivity.screenWidth
+						&& (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，判断边界
 				{
 					break;
 				}
@@ -175,7 +167,8 @@ public class PicGallery extends Gallery {
 				float bottom = top + height;
 				if (top < 0 && bottom < MainActivity.screenHeight) {
 					// imageView.postTranslateDur(-top, 200f);
-					imageView.postTranslateDur(MainActivity.screenHeight - bottom, 200f);
+					imageView.postTranslateDur(MainActivity.screenHeight
+							- bottom, 200f);
 				}
 				if (top > 0 && bottom > MainActivity.screenHeight) {
 					// imageView.postTranslateDur(PictureViewActivity.screenHeight
@@ -187,7 +180,8 @@ public class PicGallery extends Gallery {
 				float right = left + width;
 				if (left < 0 && right < MainActivity.screenWidth) {
 					// imageView.postTranslateXDur(-left, 200f);
-					imageView.postTranslateXDur(MainActivity.screenWidth - right, 200f);
+					imageView.postTranslateXDur(MainActivity.screenWidth
+							- right, 200f);
 				}
 				if (left > 0 && right > MainActivity.screenWidth) {
 					// imageView.postTranslateXDur(PictureViewActivity.screenWidth
