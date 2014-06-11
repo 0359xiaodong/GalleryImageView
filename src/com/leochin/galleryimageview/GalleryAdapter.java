@@ -53,7 +53,6 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		// Log.d("leochin","convertView = " + convertView);
 		MyImageView view = (MyImageView) convertView;
 
 		if (view == null) {
@@ -63,13 +62,9 @@ public class GalleryAdapter extends BaseAdapter {
 		view.setLayoutParams(new Gallery.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		
-
 		String item = mItems.get(position);
 		if (item != null) {
-			view.setTag(item);
-
 			ImageListener listener = ImageLoader.getImageListener(view, R.drawable.default_test, R.drawable.default_test);
-			//view.setScaleType(ScaleType.CENTER);
 			mImageLoader.get(item, listener);
 		}
 

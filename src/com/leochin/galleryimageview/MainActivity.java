@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -18,6 +19,7 @@ public class MainActivity extends FragmentActivity {
 	public static int screenHeight;
 	
 	private FragmentManager mFrgementMag;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

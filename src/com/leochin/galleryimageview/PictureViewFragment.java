@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,20 +27,22 @@ import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class PictureViewFragment extends Fragment implements
-		OnItemClickListener,OnHierarchyChangeListener {
+		OnItemClickListener, OnHierarchyChangeListener {
 
 	private PicGallery gallery;
 	private GalleryAdapter mAdapter;
 	private Activity mainActivity;
 	private TextView mSummaryText;
 	private View mView;
-	private ArrayList<String> mUrlList = new ArrayList<String>();
 
 	private String[] imageUrls = {
 			"http://f.hiphotos.baidu.com/image/pic/item/cb8065380cd791235af13afeaf345982b2b78023.jpg",
 			"http://f.hiphotos.baidu.com/image/pic/item/738b4710b912c8fca654a13efe039245d7882199.jpg",
 			"http://f.hiphotos.baidu.com/image/pic/item/c75c10385343fbf25f57e7abb27eca8065388f3b.jpg",
 			"http://g.hiphotos.baidu.com/image/pic/item/fd039245d688d43fd1eed3007f1ed21b0ff43bf8.jpg",
+			"http://h.hiphotos.baidu.com/image/pic/item/77c6a7efce1b9d166a805aecf1deb48f8d5464fc.jpg",
+			"http://h.hiphotos.baidu.com/image/pic/item/b7003af33a87e9505ada2b2112385343faf2b4aa.jpg",
+			"http://f.hiphotos.baidu.com/image/pic/item/21a4462309f79052b5c37c300ef3d7ca7acbd5db.jpg",
 			"http://a.hiphotos.baidu.com/image/pic/item/0823dd54564e92584112a1619e82d158ccbf4e1e.jpg" };
 
 	@Override
@@ -63,8 +66,6 @@ public class PictureViewFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		super.onStart();
 
-		// mUrlList = (ArrayList<String>)Arrays.asList(imageUrls);
-
 		gallery = (PicGallery) mView.findViewById(R.id.pic_gallery);
 		mSummaryText = (TextView) mView.findViewById(R.id.pic_summary_txt);
 
@@ -73,12 +74,11 @@ public class PictureViewFragment extends Fragment implements
 		gallery.setDetector(new GestureDetector(getActivity(),
 				new MySimpleGesture()));
 		mAdapter = new GalleryAdapter(mainActivity);
-
 		mAdapter.setData(Arrays.asList(imageUrls));
 		gallery.setAdapter(mAdapter);
 		gallery.setOnItemClickListener(this);
 		gallery.setOnHierarchyChangeListener(this);
-		
+
 	}
 
 	// 实现双击屏幕方法功能
@@ -124,13 +124,13 @@ public class PictureViewFragment extends Fragment implements
 	@Override
 	public void onChildViewAdded(View parent, View child) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onChildViewRemoved(View parent, View child) {
 		// TODO Auto-generated method stub
-		Log.d("leochin","this hello.2");
+		Log.d("leochin", "this hello.2");
 	}
 
 }

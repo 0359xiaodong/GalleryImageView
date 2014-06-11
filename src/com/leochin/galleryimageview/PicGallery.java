@@ -80,6 +80,7 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 			float xdistance = calXdistance(e1, e2);
 			float min_distance = MainActivity.screenWidth / 4f;
+			//float min_distance =  mContext.gets/ 4f;
 
 			if (isScrollingLeft(e1, e2) && xdistance > min_distance) {
 				kEvent = KeyEvent.KEYCODE_DPAD_LEFT;
