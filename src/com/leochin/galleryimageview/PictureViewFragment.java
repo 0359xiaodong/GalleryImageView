@@ -1,23 +1,17 @@
 package com.leochin.galleryimageview;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnDragListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.OnHierarchyChangeListener;
 import android.widget.AdapterView;
@@ -99,12 +93,6 @@ public class PictureViewFragment extends Fragment implements
 			}
 			return true;
 		}
-
-		@Override
-		public boolean onSingleTapConfirmed(MotionEvent e) {
-
-			return true;
-		}
 	}
 
 	@Override
@@ -130,7 +118,8 @@ public class PictureViewFragment extends Fragment implements
 	@Override
 	public void onChildViewRemoved(View parent, View child) {
 		// TODO Auto-generated method stub
-		Log.d("leochin", "this hello.2");
+		
+		Log.d("leochin", "this hello leochin " + gallery.getSelectedItemPosition());
 	}
 
 }

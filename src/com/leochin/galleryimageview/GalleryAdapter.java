@@ -53,6 +53,7 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		//Log.d("leochin","position = " + position);
 		MyImageView view = (MyImageView) convertView;
 
 		if (view == null) {
