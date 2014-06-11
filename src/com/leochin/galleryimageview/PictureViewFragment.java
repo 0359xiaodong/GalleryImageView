@@ -2,30 +2,31 @@ package com.leochin.galleryimageview;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.OnHierarchyChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class PictureViewFragment extends Fragment implements
-		OnItemClickListener {
+		OnItemClickListener,OnHierarchyChangeListener {
 
 	private PicGallery gallery;
 	private GalleryAdapter mAdapter;
@@ -76,6 +77,8 @@ public class PictureViewFragment extends Fragment implements
 		mAdapter.setData(Arrays.asList(imageUrls));
 		gallery.setAdapter(mAdapter);
 		gallery.setOnItemClickListener(this);
+		gallery.setOnHierarchyChangeListener(this);
+		
 	}
 
 	// 实现双击屏幕方法功能
@@ -91,7 +94,6 @@ public class PictureViewFragment extends Fragment implements
 				} else {
 					imageView.zoomTo(imageView.getMaxZoom());
 				}
-
 			} else {
 
 			}
@@ -117,6 +119,18 @@ public class PictureViewFragment extends Fragment implements
 		} else {
 			mSummaryText.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void onChildViewAdded(View parent, View child) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onChildViewRemoved(View parent, View child) {
+		// TODO Auto-generated method stub
+		Log.d("leochin","this hello.2");
 	}
 
 }

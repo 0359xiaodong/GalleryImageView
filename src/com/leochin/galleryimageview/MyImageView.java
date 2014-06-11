@@ -47,8 +47,6 @@ public class MyImageView extends ImageView {
 	private int imageWidth;// 图片的原始宽度
 	private int imageHeight;// 图片的原始高度
 
-	// float scaleRate;// 图片适应屏幕的缩放比例
-
 	static final float SCALE_RATE = 1.25F;
 	
 	private Context mContext;
