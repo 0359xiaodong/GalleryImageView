@@ -61,6 +61,8 @@ public class PictureViewFragment extends Fragment implements
 		super.onStart();
 
 		gallery = (PicGallery) mView.findViewById(R.id.pic_gallery);
+		gallery.setScreenWidthAndHeight(MainActivity.screenWidth, MainActivity.screenHeight);
+		
 		mSummaryText = (TextView) mView.findViewById(R.id.pic_summary_txt);
 
 		gallery.setVerticalFadingEdgeEnabled(false);// 取消竖直渐变边框

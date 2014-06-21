@@ -22,20 +22,32 @@ public class PicGallery extends Gallery implements OnTouchListener {
 	private int kEvent = KEY_INVALID; // invalid
 
 	private float v[] = new float[9];
+	private final String TAG = "leochin";
 
 	public PicGallery(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
+		Log.d(TAG, "onConstruct...");
 		this.setOnTouchListener(this);
 	}
-	
+
+	private int screenWidth;
+	private int screenHeight;
+
+	public void setScreenWidthAndHeight(int w, int h) {
+
+		this.screenHeight = h;
+		this.screenWidth = w;
+	}
+
 	private float baseValue = 0;
 	private float originalScale = 0;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
-	
+
+		Log.d(TAG, "onTouch...");
 		// 实现双指缩放
 		View view = PicGallery.this.getSelectedView();
 		if (view instanceof MyImageView) {
@@ -46,10 +58,10 @@ public class PicGallery extends Gallery implements OnTouchListener {
 				originalScale = imageView.getScale();
 			}
 			if (event.getAction() == MotionEvent.ACTION_MOVE) {
-				
-				//双指被按下
+
+				// 双指被按下
 				if (event.getPointerCount() == 2) {
-					//Log.d("leochin","onTouch...Action_move");
+					// Log.d("leochin","onTouch...Action_move");
 					float x = event.getX(0) - event.getX(1);
 					float y = event.getY(0) - event.getY(1);
 					// 直角三角形勾股定理：a^2+b^2=c^2
@@ -59,7 +71,7 @@ public class PicGallery extends Gallery implements OnTouchListener {
 						baseValue = value;
 					} else {
 						float scale = value / baseValue;// 当前两点间的距离除以手指落下时两点间的距离就是需要缩放的比例。
-						Log.d("leochin","onTouch..."+scale*originalScale);
+						Log.d("leochin", "onTouch..." + scale * originalScale);
 						imageView.zoomTo(originalScale * scale,
 								x + event.getX(1), y + event.getY(1));
 					}
@@ -72,15 +84,16 @@ public class PicGallery extends Gallery implements OnTouchListener {
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		
-		//实现左右滑动的效果
-		//Log.d("leochin","onScroll...Action_move");
+
+		Log.d(TAG, "onScroll...");
+		// 实现左右滑动的效果
+		// Log.d("leochin","onScroll...Action_move");
 		View view = PicGallery.this.getSelectedView();
 		if (view instanceof MyImageView) {
 
 			float xdistance = calXdistance(e1, e2);
-			float min_distance = MainActivity.screenWidth / 4f;
-			//float min_distance =  mContext.gets/ 4f;
+			float min_distance = screenWidth / 4f;
+			// float min_distance = mContext.gets/ 4f;
 
 			if (isScrollingLeft(e1, e2) && xdistance > min_distance) {
 				kEvent = KeyEvent.KEYCODE_DPAD_LEFT;
@@ -98,13 +111,13 @@ public class PicGallery extends Gallery implements OnTouchListener {
 			float width = imageView.getScale() * imageView.getImageWidth();
 			float height = imageView.getScale() * imageView.getImageHeight();
 
-			if ((int) width <= MainActivity.screenWidth
-					&& (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，直接处理滑屏事件
+			if ((int) width <= screenWidth
+					&& (int) height <= screenHeight)// 如果图片当前大小<屏幕大小，直接处理滑屏事件
 			{
 				super.onScroll(e1, e2, distanceX, distanceY);
 			} else {
-				
-				//放大之后的滑动情况
+
+				// 放大之后的滑动情况
 				left = v[Matrix.MTRANS_X];
 				right = left + width;
 				Rect r = new Rect();
@@ -112,16 +125,16 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 				if (distanceX > 0)// 向左滑动
 				{
-					if (r.left > 0 || right < MainActivity.screenWidth) {// 判断当前ImageView是否显示完全
+					if (r.left > 0 || right < screenWidth) {// 判断当前ImageView是否显示完全
 						super.onScroll(e1, e2, distanceX, distanceY);
-						
+
 					} else {
 						imageView.postTranslate(-distanceX, -distanceY);
-						
+
 					}
 				} else if (distanceX < 0)// 向右滑动
 				{
-					if (r.right < MainActivity.screenWidth || left > 0) {
+					if (r.right < screenWidth || left > 0) {
 						super.onScroll(e1, e2, distanceX, distanceY);
 					} else {
 						imageView.postTranslate(-distanceX, -distanceY);
@@ -131,20 +144,21 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 		} else {
 			super.onScroll(e1, e2, distanceX, distanceY);
-			
+
 		}
 		return false;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		Log.d(TAG, "onTouchEvent...");
 		if (gestureScanner != null) {
 			gestureScanner.onTouchEvent(event);
 		}
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_UP:
-			
-			//Log.d("leochin","motionEvent up...");
+
+			// Log.d("leochin","motionEvent up...");
 			// 判断边界是否越界
 			View view = PicGallery.this.getSelectedView();
 			if (view instanceof MyImageView) {
@@ -156,10 +170,11 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 				imageView = (MyImageView) view;
 				float width = imageView.getScale() * imageView.getImageWidth();
-				float height = imageView.getScale() * imageView.getImageHeight();
+				float height = imageView.getScale()
+						* imageView.getImageHeight();
 
-				if ((int) width <= MainActivity.screenWidth
-						&& (int) height <= MainActivity.screenHeight)// 如果图片当前大小<屏幕大小，判断边界
+				if ((int) width <= screenWidth
+						&& (int) height <= screenHeight)// 如果图片当前大小<屏幕大小，判断边界
 				{
 					break;
 				}
@@ -168,12 +183,12 @@ public class PicGallery extends Gallery implements OnTouchListener {
 				m.getValues(v);
 				float top = v[Matrix.MTRANS_Y];
 				float bottom = top + height;
-				if (top < 0 && bottom < MainActivity.screenHeight) {
+				if (top < 0 && bottom < screenHeight) {
 					// imageView.postTranslateDur(-top, 200f);
-					imageView.postTranslateDur(MainActivity.screenHeight
+					imageView.postTranslateDur(screenHeight
 							- bottom, 200f);
 				}
-				if (top > 0 && bottom > MainActivity.screenHeight) {
+				if (top > 0 && bottom > screenHeight) {
 					// imageView.postTranslateDur(PictureViewActivity.screenHeight
 					// - bottom, 200f);
 					imageView.postTranslateDur(-top, 200f);
@@ -181,12 +196,12 @@ public class PicGallery extends Gallery implements OnTouchListener {
 
 				float left = v[Matrix.MTRANS_X];
 				float right = left + width;
-				if (left < 0 && right < MainActivity.screenWidth) {
+				if (left < 0 && right < screenWidth) {
 					// imageView.postTranslateXDur(-left, 200f);
-					imageView.postTranslateXDur(MainActivity.screenWidth
+					imageView.postTranslateXDur(screenWidth
 							- right, 200f);
 				}
-				if (left > 0 && right > MainActivity.screenWidth) {
+				if (left > 0 && right > screenWidth) {
 					// imageView.postTranslateXDur(PictureViewActivity.screenWidth
 					// - right, 200f);
 					imageView.postTranslateXDur(-left, 200f);
